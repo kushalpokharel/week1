@@ -1,6 +1,6 @@
 pragma circom 2.0.0;
 
-include "../../node_modules/circomlib/circuits/comparators.circom";
+include "../node_modules/circomlib/circuits/comparators.circom";
 
 template RangeProof(n) {
     assert(n <= 252);
@@ -12,4 +12,14 @@ template RangeProof(n) {
     component high = GreaterEqThan(n);
 
     // [assignment] insert your code here
+    //lowerbound need to be lower than our input
+    low.in[0] <== range[0];
+    low.in[1] <== in;
+
+    //upper bound need to be upper than our input
+    high.in[0] <== range[1];
+    high.in[1] <== in;
+
+    //if anyone of the output is 0, total output is 0
+    out <== low.out*high.out ;
 }
